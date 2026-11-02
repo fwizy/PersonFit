@@ -1,18 +1,18 @@
-# PersonFit 2 — validação da atualização
+# PersonFit — validação da atualização
 
 Verificações realizadas em 1 de novembro de 2026, horário do Brasil. Este relatório separa testes de lógica, inspeção no navegador e verificações ainda pendentes em aparelhos reais.
 
 ## Automatizado
 
-`npm test`: **24 testes aprovados**. `npm run build`: catálogo, arquivos, mídias e alternativas presentes. Nenhuma dependência de runtime adicionada.
+`npm test`: **33 testes aprovados**. `npm run build`: catálogo, arquivos, mídias e alternativas presentes. Nenhuma dependência de runtime adicionada.
 
 | Área | Verificação |
 | --- | --- |
 | Migração | Schema 1 → 2 preserva plano, IDs, calendário, datas, cargas gerais/por série, checks e timestamps. Novos campos pessoais vazios; notas e esforço sem resposta inventada. Migração idempotente. |
 | Grupos livres | Planos com apenas peito, costas + bíceps, glúteos, panturrilhas e abdômen nas duas divisões. Nenhum foco principal fora da seleção. Prioridades inválidas rejeitadas. |
-| Contagem | Quantidade manual respeitada, inclusive dois exercícios para dois grupos. Padrões distintos por sessão. Incompatibilidades geram mensagem, sem adicionar músculos. |
+| Contagem | Quantidade manual respeitada, inclusive dois exercícios para dois grupos. Famílias complementares por sessão, sem variantes quase idênticas. Incompatibilidades geram mensagem, sem adicionar músculos. |
 | Rotina | Dias disponíveis separados dos programados; um único foco com seis dias disponíveis recebe dois programados na proposta automática. Dias consecutivos incompatíveis recusados. |
-| Personalização | Objetivos principal/secundário, prioridades, nível, retorno e preferências alteram parâmetros ou seleção. Iniciantes/retorno usam menos séries e no máximo complexidade 1. |
+| Personalização | Objetivo principal, prioridades, nível, retorno e preferências alteram parâmetros ou seleção. Iniciantes/retorno usam menos séries e no máximo complexidade 1. |
 | Atividades externas | Agenda evita grupos nas outras atividades intensas nos dias informados; conflito sem solução é explicado. |
 | Medidas | Idade, peso e altura não geram cargas nem inferem nível. |
 | Finalização | Nota e esforço opcionais. Finalizar sem nota conserva esforço. Finalização idempotente, sem marcar pendências automaticamente. |
@@ -23,10 +23,10 @@ Verificações realizadas em 1 de novembro de 2026, horário do Brasil. Este rel
 | Progressão | Exige duas sessões com repetições reais, mesma carga positiva e esforço leve; check isolado, esforço pesado, notas ou repetições ausentes não geram sugestão. |
 | Backup | Schema 2 faz ida/volta com notas, esforço e repetições; schema 1 é migrado. Estruturas corrompidas, versões desconhecidas e sessões órfãs são rejeitadas. |
 | Datas e cargas | Datas locais atravessam mês/ano; vírgula e ponto aceitos; vazio distinto de zero. |
-| Biblioteca | 43 exercícios com músculos, mídias locais, pré-requisitos, fonte/licença e alternativas do mesmo padrão e foco. |
-| Service worker | Rede/cache simulados: shell em /PersonFit/, abertura sem rede, mídia completa, byte ranges 206 e erros 416. Instalação não baixa biblioteca inteira. Cache de mídia v1 mantido; shell v2 separado. |
+| Biblioteca | 53 exercícios com músculos, mídias locais, pré-requisitos, fonte/licença e alternativas do mesmo padrão e foco. |
+| Service worker | Rede/cache simulados: shell em /PersonFit/, abertura sem rede, mídia completa, byte ranges 206 e erros 416. Instalação não baixa biblioteca inteira. Cache de mídia v1 mantido; shell v2.1 separado. |
 
-Os 43 MP4 foram inspecionados com ffprobe: H.264, mais de um quadro e duração válida. A animação CDC de origem tem 13 quadros/5,2 s, não é uma imagem estática apresentada como animação. As 12 novas mídias wger foram conferidas por contato visual de três instantes, corrigindo a elevação lateral bilateral na polia. Essa inspeção não é revisão profissional da técnica.
+Os 53 MP4 foram inspecionados com ffprobe: H.264, mais de um quadro e duração válida. A animação CDC de origem tem 13 quadros/5,2 s, não é uma imagem estática apresentada como animação. As 12 novas mídias wger foram conferidas por contato visual de três instantes, corrigindo a elevação lateral bilateral na polia. Essa inspeção não é revisão profissional da técnica.
 
 ## Navegador Chrome remoto
 
@@ -59,7 +59,7 @@ Foram usados somente dados sintéticos de teste no navegador de desenvolvimento.
 
 ## Limites do catálogo e do produto
 
-- 43 demonstrações, com um padrão de abdômen e um de glúteos; variedade de peito/costas ainda limitada. O gerador informa combinações sem cobertura suficiente, sem completar com músculos desmarcados ou variações redundantes.
+- 53 demonstrações; glúteos ainda têm apenas uma família de movimento. Equipamentos e nível limitam as opções disponíveis. O gerador informa combinações sem cobertura suficiente, sem completar com músculos desmarcados ou variações redundantes.
 - Os vídeos wger mostram academia real. A animação CDC é ilustrada e de resolução original baixa. Não há fundo neutro uniforme em toda a biblioteca.
 - Medidas corporais e anotações ficam como referências acessíveis para ajuste/revisão, não como avaliação automática de capacidade.
 - Dias da musculação são distribuídos automaticamente a partir da quantidade disponível/programada, não escolhidos individualmente por nome de dia.
@@ -67,3 +67,25 @@ Foram usados somente dados sintéticos de teste no navegador de desenvolvimento.
 - Sessões já criadas preservam seu snapshot quando templates são editados. Isso inclui rascunhos ainda não iniciados.
 - Alternativas fora do plano preparado precisam de internet para a demonstração. Prepare o offline novamente após alterações.
 - Dados não sincronizam; o cronômetro não envia notificações em segundo plano. O navegador pode remover caches por falta de espaço.
+
+## Correção 2.1 — 2 de novembro de 2026
+
+- Dez exercícios adicionados com vídeo local e atribuição individual. Novos arquivos conferidos em múltiplos instantes para correspondência de movimento e equipamento.
+- Regressão do aviso Puxar: seis exercícios com costas e bíceps, equipamentos de academia e 60 minutos, tanto para iniciante quanto intermediário. Quantidade e grupos respeitados, sem duplicar famílias quase idênticas.
+- Rosca Scott pode complementar rosca em pé; mudanças apenas de pegada/equipamento na rosca em pé continuam contando como uma família. Bases diferentes do leg press não aumentam artificialmente a cobertura.
+- Nenhuma mudança no schema ou nos registros: planos e sessões existentes permanecem como estavam. O catálogo ampliado se aplica a novas gerações e edições explícitas.
+- As combinações realmente sem cobertura continuam sendo explicadas, sem reduzir quantidade ou incluir grupos silenciosamente. Não há garantia de dez exercícios para qualquer grupo/equipamento.
+- Testes de regressão anteriores novamente executados; as limitações de aparelhos reais e offline descritas acima permanecem.
+
+## Simplificação 3.0 — 2 de novembro de 2026
+
+- Testes de regressão e migração de perfis v2: planos/snapshots, histórico, cargas, checks, notas, esforço e medidas mantidos. Migração idempotente. Novos campos pessoais não ganham respostas inventadas.
+- Campos aposentados são ignorados na importação e na geração; snapshots de planos antigos permanecem intactos. Backup com perfil antigo foi validado após a normalização.
+- Idade e peso usam selects nativos (teclado/toque/semântica acessível); o peso separa quilos e decimal e conserva decimais antigos. No navegador, 29 anos e 80,5 kg permaneceram ao voltar e após recarregar.
+- Altura 181, 1,81 e 1.81 foi exercitada na interface: resultado 1,81. Campo apagado permaneceu vazio; voltar/reabrir conservou respostas. Parser também testado com valores inválidos e centímetro fracionário.
+- Cinco equipamentos confirmados na interface; peso corporal implícito. Banco/suporte/apoio Scott não são presumidos a partir de barra ou halteres. Exercícios atuais continuam no plano mesmo sem confirmação de acessórios.
+- Ajustes com quatro áreas conferidos no navegador. Salvar perfil abriu escolha explícita de manter ou gerar; manter conservou o plano e a sessão em andamento. Edição de Meu perfil mostra três etapas.
+- Claro, Sistema e Escuro foram selecionados no navegador; tema manual persistiu ao recarregar. Acompanhamento de mudanças do sistema usa o listener existente, sem ensaio de mudança do SO remoto.
+- Formulário e lista de ajustes medidos em iframes de largura externa 320, 360, 390 e 430 px. Largura interna e scrollWidth iguais em cada caso; controles com 46 px de altura. Não houve overflow horizontal. Essas medições não equivalem a aparelhos reais.
+- Favicon 16/32 px e ícone Apple 180 px derivados do PNG original de 512 px; manifest/caches têm caminhos relativos e URLs versionadas. Byte ranges e abertura offline em subdiretório passaram no harness de service worker.
+- Persistem as pendências de teclado nativo, VoiceOver/TalkBack, Safari/iPhone, Chrome/Android reais e instalação/offline em dispositivo. A publicação na conta GitHub do usuário não foi executada.
