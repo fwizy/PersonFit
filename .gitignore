@@ -1,5 +1,0 @@
-*.raw
-*.zip
-*.tar.gz
-node_modules/
-*backup*.json
